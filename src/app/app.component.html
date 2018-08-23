@@ -1,20 +1,71 @@
-<!--The content below is only a placeholder and can be replaced.-->
-<div style="text-align:center">
-  <h1>
-    Welcome to {{ title }}!
-  </h1>
-  <img width="300" alt="Angular Logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg==">
-</div>
-<h2>Here are some links to help you start: </h2>
-<ul>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://angular.io/tutorial">Tour of Heroes</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://github.com/angular/angular-cli/wiki">CLI Documentation</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://blog.angular.io/">Angular blog</a></h2>
-  </li>
-</ul>
+<div class="container">
+    <br>
+    <div class="row pull-right">
+        <div style="margin-right: 20%;">
+            <a (click)="onEditCloseItems()" class="text-info float-right">
+                <i style="padding-right: 20%;" class="mdi mdi-{{isEditItems ? 'close' : 'pencil'}} mdi-18px">{{isEditItems
+                    ? 'Close' : 'Edit'}}</i>
+            </a>
+        </div>
+    </div>
+    <div class="row">
 
+        <table class="table table-striped table-bordered col-lg-8 col-lg-offset-1">
+            <thead>
+                <tr>
+                    <th>Ledger
+                    </th>
+                    <th>
+                        Debit
+                    </th>
+                    <th>Credit
+                    </th>
+                </tr>
+            </thead>
+
+            <tbody *ngIf="isEditItems">
+                <tr>
+                    <td *ngIf="firstField">
+                        <select [(ngModel)]="Ledger" class="form-control py-2">
+                            <option *ngFor="let Ledger of Ledgerlist" [ngValue]="Ledger.account">{{Ledger.account}}</option>
+                        </select>
+                    </td>
+                    <td>
+                        <input [(ngModel)]="Credit" class="form-control py-2 " type="number" name="Ledger" placeholder="Credit" appTwoDigitDecimaNumber>
+                    </td>
+                    <td>
+                        <input [(ngModel)]="Debit" class="form-control py-2 " type="number" name="Ledger" placeholder="Debit" appTwoDigitDecimaNumber>
+                    </td>
+                </tr>
+
+                <tr *ngFor="let field of resultdata; let i = index">
+                    <td>
+                        <input [(ngModel)]="field.Ledger" class="form-control" type="text" name="Ledger" placeholder="Ledger">
+                    </td>
+                    <td>
+                        <input [(ngModel)]="field.Credit" class="form-control py-2 " type="number" placeholder=" Credit " appTwoDigitDecimaNumber>
+
+                    </td>
+                    <td>
+                        <input [(ngModel)]="field.Debit " class="form-control py-2 " type="number " placeholder="Debit " appTwoDigitDecimaNumber>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="right " colspan="3 ">
+                        <button class="btn btn-success btn-sm " type="button " (click)="addFieldValue(Ledger,Credit,Debit)
+                                " [disabled]="((!Credit!=0&&!Debit!=0))" style="margin-right:10px ">Add
+                            More Item</button>
+                        <button (click)="Savedata() " class="btn btn-primary btn-sm" type="button ">Save Items</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="col-lg-4 col-lg-offset-4 "> Total Sum (Credit {{creditsum}} + Debit {{debitsum}} ) :: {{creditsum+debitsum}}
+</div>
+<hr>
+
+<div class="row">
+    {{resultdata | json}} {{_Service.people$|async}}
+</div>
